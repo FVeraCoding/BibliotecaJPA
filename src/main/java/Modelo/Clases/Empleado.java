@@ -13,6 +13,7 @@ public class Empleado implements Serializable {
     @GeneratedValue
     private int id;
     
+    @Basic
     private String nombre;
     private String apellidos;
     
@@ -34,6 +35,12 @@ public class Empleado implements Serializable {
     
     @OneToMany(mappedBy="empleado")
     List<Club> listaClubes;
+    
+    @OneToMany(mappedBy="empleado")
+    List<Evento> listaEventosOrganizados;
+    
+    @ManyToMany(mappedBy="listaEmpleadosAsistencia")
+    List<Evento> listaEventosAsistencia;
 
     public Empleado() {
     }
@@ -48,6 +55,8 @@ public class Empleado implements Serializable {
         this.fechaAlta = fechaAlta;
         this.cargo = cargo;
         this.listaClubes = new ArrayList<Club>();
+        this.listaEventosOrganizados = new ArrayList<Evento>();
+        this.listaEventosAsistencia = new ArrayList<Evento>();
     }
 
     public int getId() {
@@ -137,6 +146,26 @@ public class Empleado implements Serializable {
     public void setListaClubes(List<Club> listaClubes) {
         this.listaClubes = listaClubes;
     }
+
+    public List<Evento> getListaEventosOrganizados() {
+        return listaEventosOrganizados;
+    }
+
+    public void setListaEventosOrganizados(List<Evento> listaEventos) {
+        this.listaEventosOrganizados = listaEventos;
+    }
+
+    public List<Evento> getListaEventosAsistencia() {
+        return listaEventosAsistencia;
+    }
+
+    public void setListaEventosAsistencia(List<Evento> listaEventosAsistencia) {
+        this.listaEventosAsistencia = listaEventosAsistencia;
+    }
+    
+    
+    
+    
     
     public void addClub(Club club){
         if(!this.listaClubes.contains(club)){
@@ -152,6 +181,27 @@ public class Empleado implements Serializable {
         if(usuario != null){
             this.setUsuario(usuario);
             usuario.setEmp(this);
+        }
+    }
+    
+    public void addEventoOrganizado(Evento evento){
+        if(!this.listaEventosOrganizados.contains(evento)){
+            this.listaEventosOrganizados.add(evento);
+            
+            if(evento.getEmpleado() == null){
+                evento.setEmpleado(this);
+            }
+        }
+    }
+    
+    public void addEventoAsistencia(Evento evento){
+        if(!this.getListaEventosAsistencia().contains(evento)){
+            this.getListaEventosAsistencia().add(evento);
+            
+            if(!evento.getListaEmpleadosAsistencia().contains(this)){
+                evento.getListaEmpleadosAsistencia().add(this);
+            }
+            
         }
     }
     

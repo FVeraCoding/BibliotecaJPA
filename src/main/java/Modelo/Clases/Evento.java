@@ -19,10 +19,20 @@ public class Evento implements Serializable {
     LocalDate fecha;
     
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinTable(name="asistencia_evento",
+    @JoinTable(name="asistencia_socios_evento",
             joinColumns = @JoinColumn(name="id_evento"),
             inverseJoinColumns = @JoinColumn(name="id_socio"))
     List<Socio> listaSocios;
+    
+    @ManyToMany
+    @JoinTable(name = "asistencia_empleados_evento",
+            joinColumns = @JoinColumn(name="id_evento"),
+            inverseJoinColumns = @JoinColumn(name="id_socio"))
+    List<Empleado> listaEmpleadosAsistencia;
+    
+    @ManyToOne
+    @JoinColumn(name = "empleado_organizador")
+    Empleado empleado;
 
     public Evento() {
     }
@@ -32,6 +42,7 @@ public class Evento implements Serializable {
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.listaSocios = new ArrayList<Socio>();
+        this.listaEmpleadosAsistencia = new ArrayList<Empleado>();
     }
 
     public int getId() {
@@ -72,6 +83,42 @@ public class Evento implements Serializable {
 
     public void setListaSocios(List<Socio> listaSocios) {
         this.listaSocios = listaSocios;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public List<Empleado> getListaEmpleadosAsistencia() {
+        return listaEmpleadosAsistencia;
+    }
+
+    public void setListaEmpleados(List<Empleado> listaEmpleados) {
+        this.listaEmpleadosAsistencia = listaEmpleados;
+    }
+    
+    public void addEmpleadoAsistencia(Empleado empleado){
+        if(!this.getListaEmpleadosAsistencia().contains(empleado)){
+            this.getListaEmpleadosAsistencia().add(empleado);
+            
+            if(!empleado.getListaEventosAsistencia().contains(this)){
+                empleado.getListaEventosAsistencia().add(this);
+            }
+        }
+    }
+    
+    public void addEmpleadoOrganizador(Empleado empleado){
+        if(this.getEmpleado() == null){
+            this.setEmpleado(empleado);
+            
+            if(!empleado.getListaEventosOrganizados().contains(this)){
+                empleado.getListaEventosOrganizados().add(this);
+            }
+        }
     }
     
     public void addSocio(Socio socio){

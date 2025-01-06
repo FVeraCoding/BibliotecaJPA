@@ -14,7 +14,11 @@ public class Socio implements Serializable {
     @GeneratedValue
     private int id;
 
+    @Basic
+    @Column(name="nombre")
     private String nombre;
+    
+    @Column(name="apellidos")
     private String apellidos;
 
     @Column(name = "fecha_nacimiento")

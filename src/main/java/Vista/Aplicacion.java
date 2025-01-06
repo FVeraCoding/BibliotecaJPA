@@ -25,6 +25,7 @@ public class Aplicacion {
             ClubController clubControl = new ClubController();
             EventoController evenControl = new EventoController();
             
+            
             //Eventos
             Evento evento1 = new Evento("Lectura en voz alta de Novela", "Esta es una descripción de evento de prueba", LocalDate.now());
             evenControl.addEvento(evento1);
@@ -39,6 +40,12 @@ public class Aplicacion {
             //Empleados
             Empleado emp1 = new Empleado("Fer", "Test", LocalDate.of(1999, Month.NOVEMBER, 02), "fvera@correo.com", "722281525", "Calle Falsa 123", LocalDate.now(), "Jefe");
             empControl.addEmpleado(emp1);
+            
+            Empleado emp2 = new Empleado("María", "Álvarez", LocalDate.of(1998, Month.APRIL, 13), "maria@correo.com", "954534251", "Calle espontaneidad", LocalDate.now(), "Administradora");
+            empControl.addEmpleado(emp2);
+            
+            Empleado emp3 = new Empleado("Pablo", "Galván", LocalDate.of(2000, 02, 10), "pablo@correo.com", "765493827", "Bami", LocalDate.now(), "Bibliotecario");
+            empControl.addEmpleado(emp3);
 
             //Socios
             Socio socio1 = new Socio("Adrian", "Lopez", LocalDate.of(1992, Month.MARCH, 2), "vegetarianguy@gmail.com", "765456543", "Calle brocoli", LocalDate.now());
@@ -51,29 +58,72 @@ public class Aplicacion {
             soControl.addSocio(socio3);
             
             //Usuarios
-            Usuario usuario1 = new Usuario("fvera", "1234", "Administrador", emp1);
-            usuControl.addUsuario(usuario1);
+            Usuario usuarioEmp1 = new Usuario("fvera", "1234", "Administrador");
+            usuControl.addUsuario(usuarioEmp1);
             
-            Usuario usuario2 = new Usuario("AdriVeganFury", "1234", "Socio", socio1);
-            usuControl.addUsuario(usuario2);
+            Usuario usuarioSocio1 = new Usuario("AdriVeganFury", "1234", "Socio");
+            usuControl.addUsuario(usuarioSocio1);
+            
+            Usuario usuarioEmp2 = new Usuario("MariaAlvarez", "1234", "Administrador");
+            usuControl.addUsuario(usuarioEmp2);
+            
+            Usuario usuarioEmp3 = new Usuario("Pagama00", "1234", "Empleado");
+            usuControl.addUsuario(usuarioEmp3);
             
             
 
             //Relaciones
-            emp1.addUsuario(usuario1);
-            socio1.addUsuario(usuario2);
+            
+            //Usuario-Empleado
+            emp1.addUsuario(usuarioEmp1);
+            emp2.addUsuario(usuarioEmp2);
+            emp3.addUsuario(usuarioEmp3);
+            
+            //Usuario-Socio
+            socio1.addUsuario(usuarioSocio1);
+            
+            //Club-EmpleadoOrganizador
             club1.addEmpleado(emp1);
+            
+            //Socio-Club
             socio1.addClub(club1);
+            
+            //Evento-SocioAsistencia
             evento1.addSocio(socio1);
             evento1.addSocio(socio2);
             evento2.addSocio(socio3);
             evento2.addSocio(socio1);
+            
+            //Evento-EmpleadoOrganizador
+            evento1.addEmpleadoOrganizador(emp1);
+            evento2.addEmpleadoOrganizador(emp3);
+            
+            //Evento-EmpleadoAsistencia
+            evento1.addEmpleadoAsistencia(emp2);
+            evento1.addEmpleadoAsistencia(emp3);
+            
+            evento2.addEmpleadoAsistencia(emp1);
+            evento2.addEmpleadoAsistencia(emp2);
+            
+            
 
+            //Actualizar los datos con las relaciones.
+            
+            //Empleados
             empControl.editEmpleado(emp1);
+            empControl.editEmpleado(emp2);
+            empControl.editEmpleado(emp3);
+            
+            //Clubs
             clubControl.editClub(club1);
+            
+            //Socios
             soControl.editSocio(socio1);
+            
+            //Eventos
             evenControl.editEvento(evento1);
             evenControl.editEvento(evento2);
+  
             
         } catch (Exception ex) {
             Logger.getLogger(Aplicacion.class.getName()).log(Level.SEVERE, null, ex);

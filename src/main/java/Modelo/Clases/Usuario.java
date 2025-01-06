@@ -22,19 +22,13 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(String nombre_usuario, String contraseña, String rol, Empleado emp) {
+    public Usuario(String nombre_usuario, String contraseña, String rol) {
         this.nombre_usuario = nombre_usuario;
         this.contraseña = contraseña;
         this.rol = rol;
-        this.emp = emp;
+
     }
 
-    public Usuario(String nombre_usuario, String contraseña, String rol, Socio socio) {
-        this.nombre_usuario = nombre_usuario;
-        this.contraseña = contraseña;
-        this.rol = rol;
-        this.socio = socio;
-    }  
     
 
     public int getId() {
